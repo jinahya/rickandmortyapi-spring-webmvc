@@ -1,0 +1,17 @@
+spring.application:
+  name: demo
+
+spring.datasource:
+  driver-class-name: org.sqlite.JDBC
+  #  url: jdbc:sqlite::resource:rickandmortyapi.db?jdbc.explicit_readonly=true
+  url: jdbc:sqlite::resource:rickandmortyapi.db
+#  username:
+#  password:
+
+spring.jpa:
+  show-sql: true
+  properties:
+    hibernate:
+      format_sql: true
+      highlight.sql: true
+      highlight.sql_logging: true

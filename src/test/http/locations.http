@@ -1,0 +1,11 @@
+### Reads locations
+GET http://localhost:8080/locations?size=1
+
+### Reads locations with projection
+GET http://localhost:8080/locations?size=1&projection=locationProjection
+
+### Reads a location
+GET http://localhost:8080/locations/1
+
+### Reads a location with projection
+GET http://localhost:8080/locations/1?projection=locationProjection

@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.0.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id("com.github.ben-manes.versions") version "0.53.0"
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'The Rick and Morty API Spring Web MVC'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal() // when testing against a SNAPSHOT
+    mavenCentral()
+}
+
+ext {
+    mapStructVersion = '1.6.3'
+}
+
+dependencies {
+    implementation 'io.github.jinahya:rickandmortyapi-persistence:0.1.7'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+//    implementation 'org.springframework.boot:spring-boot-starter-json'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux-test'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    // the mapstruct-processor should be after the lombok
+    implementation "org.mapstruct:mapstruct:$mapStructVersion"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapStructVersion"
+
+    runtimeOnly 'org.hibernate.orm:hibernate-community-dialects'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    runtimeOnly 'org.xerial:sqlite-jdbc:3.51.1.0'
+
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (name == 'compileJava') {
+        options.compilerArgs += [
+                '-Amapstruct.defaultComponentModel=spring', // default: false
+                '-Amapstruct.unmappedTargetPolicy=IGNORE'   // default: WARN
+        ]
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

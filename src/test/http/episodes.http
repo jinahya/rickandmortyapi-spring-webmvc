@@ -1,0 +1,11 @@
+### Reads episodes
+GET http://localhost:8080/episodes?size=1
+
+### Reads episodes with projection
+GET http://localhost:8080/episodes?size=1&projection=episodeProjection
+
+### Reads a episode
+GET http://localhost:8080/episodes/1
+
+### Reads a episode with projection
+GET http://localhost:8080/episodes/1?projection=episodeProjection

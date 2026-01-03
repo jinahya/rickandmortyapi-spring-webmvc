@@ -1,0 +1,2 @@
+### Reads /characters
+GET http://localhost:8080/characters?size=1&page=0
