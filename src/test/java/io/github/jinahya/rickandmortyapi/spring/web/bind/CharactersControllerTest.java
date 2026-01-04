@@ -24,7 +24,7 @@ class CharactersControllerTest
         extends _BaseControllerTest {
 
     @Test
-    void readCharacters__() {
+    void read__() {
         int count = 0;
         for (String uri = "/" + CharactersController.REQUEST_MAPPING_PATH; ; ) {
             final EntityExchangeResult<PagedModel<EntityModel<CharacterType>>> result = webTestClient()
@@ -55,7 +55,7 @@ class CharactersControllerTest
 
     @ValueSource(ints = {1, 2, 3})
     @ParameterizedTest
-    void readCharacter__(final int id) {
+    void readSingle__(final int id) {
         final EntityExchangeResult<EntityModel<CharacterType>> result = webTestClient()
                 .get()
                 .uri(b -> b.pathSegment(CharactersController.REQUEST_MAPPING_PATH,

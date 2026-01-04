@@ -92,7 +92,7 @@ class CharactersController {
                     MediaTypes.HAL_JSON_VALUE
             }
     )
-    PagedModel<EntityModel<CharacterType>> readCharacters(final Pageable pageable) {
+    PagedModel<EntityModel<CharacterType>> read(final Pageable pageable) {
         final var found = characterService.applyRepository(r -> r.findAll(pageable));
         final var mapped = found.map(characterTypeMapper::fromEntity);
         final var assembled = pagedResourcesAssembler.toModel(mapped);
@@ -112,7 +112,7 @@ class CharactersController {
                     MediaTypes.HAL_JSON_VALUE
             }
     )
-    EntityModel<CharacterType> readCharacter(@Positive @PathVariable(PATH_NAME_ID) final int id) {
+    EntityModel<CharacterType> readSingle(@Positive @PathVariable(PATH_NAME_ID) final int id) {
         return characterService.applyRepository(r -> r.findById(id))
                 .map(characterTypeMapper::fromEntity)
                 .map(EntityModel::of)

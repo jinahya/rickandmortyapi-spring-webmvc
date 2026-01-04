@@ -58,7 +58,6 @@ class LocationResidentsController {
 
     // -----------------------------------------------------------------------------------------------------------------
     static String getLinkHrefToCollection(@Nullable final Integer idLocationId, @Nullable final Integer idResidentId) {
-        assert idLocationId != null || idResidentId != null;
         final var link = linkTo(LocationResidentsController.class)
                 .slash(REQUEST_MAPPING_PATH_VALUE)
                 .withSelfRel();
@@ -169,7 +168,7 @@ class LocationResidentsController {
                     MediaTypes.HAL_JSON_VALUE
             }
     )
-    EntityModel<LocationResidentType> read(
+    EntityModel<LocationResidentType> readSingle(
             @PathVariable(name = REQUEST_MAPPING_PATH_NAME) final String requestMappingPath,
             @MatrixVariable(pathVar = REQUEST_MAPPING_PATH_NAME) final MultiValueMap<String, String> matrixVariables,
             @PathVariable(name = PATH_NAME_DONTCARE) final String dontcare) {

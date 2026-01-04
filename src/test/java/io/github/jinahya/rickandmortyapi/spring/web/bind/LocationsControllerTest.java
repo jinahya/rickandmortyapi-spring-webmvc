@@ -24,7 +24,7 @@ class LocationsControllerTest
         extends _BaseControllerTest {
 
     @Test
-    void readLocations__() {
+    void read__() {
         int count = 0;
         for (String uri = "/" + LocationsController.REQUEST_MAPPING_PATH; ; ) {
             final EntityExchangeResult<PagedModel<EntityModel<LocationType>>> result = webTestClient()
@@ -55,7 +55,7 @@ class LocationsControllerTest
 
     @ValueSource(ints = {1, 2, 3})
     @ParameterizedTest
-    void readLocation__(final int id) {
+    void readSingle__(final int id) {
         final EntityExchangeResult<EntityModel<LocationType>> result = webTestClient()
                 .get()
                 .uri(b -> b.pathSegment(LocationsController.REQUEST_MAPPING_PATH,
