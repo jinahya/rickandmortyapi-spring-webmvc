@@ -6,10 +6,15 @@ import io.github.jinahya.rickandmortyapi.persistence.LocationResident_;
 import io.github.jinahya.rickandmortyapi.spring.stereotype.LocationResidentService;
 import io.github.jinahya.rickandmortyapi.spring.web.bind.type.LocationResidentType;
 import io.github.jinahya.rickandmortyapi.spring.web.bind.type.mapper.LocationResidentTypeMapper;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.criteria.JoinType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -127,11 +132,36 @@ class LocationResidentsController {
             }
     )
     PagedModel<EntityModel<LocationResidentType>> read(
-            @PathVariable(name = REQUEST_MAPPING_PATH_NAME) final String requestMappingPath,
-            @MatrixVariable(pathVar = REQUEST_MAPPING_PATH_NAME) final MultiValueMap<String, String> matrixVariables,
-            final Pageable pageable) {
-        final var idLocationId = matrixVariables.getFirst(PARAM_NAME_ID_LOCATION_ID);
-        final var idResidentId = matrixVariables.getFirst(PARAM_NAME_ID_RESIDENT_ID);
+
+            @Parameter(required = false,
+                       schema = @Schema(type = "string",
+                                        defaultValue = REQUEST_MAPPING_PATH_VALUE
+                       ),
+                       in = ParameterIn.PATH
+            )
+            @DefaultValue(REQUEST_MAPPING_PATH_VALUE)
+            @PathVariable(name = REQUEST_MAPPING_PATH_NAME, required = false) final String requestMappingPath,
+
+            @Parameter(required = false,
+                       schema = @Schema(type = "integer", format = "int32"),
+//                       in = ParameterIn.PATH,
+                       description = "id.locationId to filter"
+            )
+            @MatrixVariable(pathVar = REQUEST_MAPPING_PATH_NAME,
+                            name = PARAM_NAME_ID_LOCATION_ID,
+                            required = false
+            ) final Integer idLocationId,
+
+            @Parameter(required = false,
+                       schema = @Schema(type = "integer", format = "int32"),
+//                       in = ParameterIn.PATH,
+                       description = "id.residentId to filter"
+            )
+            @MatrixVariable(pathVar = REQUEST_MAPPING_PATH_NAME,
+                            name = PARAM_NAME_ID_RESIDENT_ID,
+                            required = false) final Integer idResidentId,
+
+            @ParameterObject final Pageable pageable) {
         final var found = locationResidentService.applyRepository(repo -> repo.findAll(
                 (r, q, b) -> {
                     if (q.getResultType() != Long.class) {
