@@ -35,6 +35,8 @@ public class CharacterType
 
     public static final String RELATION_LOCATION_ = "location_";
 
+    public static final String RELATION_EPISODES_ = "episodes_";
+
     // -----------------------------------------------------------------------------------------------------------------
     @Positive
     @NotNull
@@ -75,7 +77,4 @@ public class CharacterType
     @Valid
     @NotNull
     private LocationType location_;
-//
-//    @JsonIgnore
-//    private List<@Valid @NotNull EpisodeType> episodes_;
 }

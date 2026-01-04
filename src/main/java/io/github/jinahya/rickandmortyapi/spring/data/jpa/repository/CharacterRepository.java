@@ -9,9 +9,6 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@SuppressWarnings({
-        "java:S114" // Interface names should comply with a naming convention
-})
 public interface CharacterRepository
         extends _BaseEntityRepository<Character, Integer> {
 

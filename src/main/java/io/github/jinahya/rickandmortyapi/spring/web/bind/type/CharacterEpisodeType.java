@@ -1,7 +1,7 @@
 package io.github.jinahya.rickandmortyapi.spring.web.bind.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.github.jinahya.rickandmortyapi.persistence.LocationResidentId;
+import io.github.jinahya.rickandmortyapi.persistence.CharacterEpisodeId;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -10,8 +10,8 @@ import lombok.Setter;
 import org.springframework.hateoas.server.core.Relation;
 
 @Relation(
-        itemRelation = LocationResidentType.RELATION_ITEM,
-        collectionRelation = LocationResidentType.RELATION_COLLECTION
+        itemRelation = CharacterEpisodeType.RELATION_ITEM,
+        collectionRelation = CharacterEpisodeType.RELATION_COLLECTION
 )
 //@Setter(AccessLevel.PACKAGE)
 @Setter
@@ -21,29 +21,29 @@ import org.springframework.hateoas.server.core.Relation;
         "java:S115", // Constant names should comply with a naming convention
         "java:S116"  // Field names should comply with a naming convention
 })
-public class LocationResidentType
+public class CharacterEpisodeType
         extends _BaseType {
 
-    static final String RELATION_ITEM = "characterResident";
+    static final String RELATION_ITEM = "characterEpisode";
 
-    static final String RELATION_COLLECTION = "characterResidents";
+    static final String RELATION_COLLECTION = "characterEpisodes";
 
     // -----------------------------------------------------------------------------------------------------------------
-    public static final String RELATION_LOCATION = "location";
+    public static final String RELATION_CHARACTER = "character";
 
-    public static final String RELATION_RESIDENT = "resident";
+    public static final String RELATION_EPISODE = "episode";
 
     // -----------------------------------------------------------------------------------------------------------------
     @Valid
     @NotNull
-    private LocationResidentId id;
+    private CharacterEpisodeId id;
 
     // -----------------------------------------------------------------------------------------------------------------
     @JsonIgnore
     @Valid
-    private LocationType location;
+    private CharacterType character;
 
     @JsonIgnore
     @Valid
-    private CharacterType resident;
+    private EpisodeType episode;
 }

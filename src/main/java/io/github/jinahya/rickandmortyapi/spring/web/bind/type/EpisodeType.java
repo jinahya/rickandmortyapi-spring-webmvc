@@ -1,21 +1,20 @@
 package io.github.jinahya.rickandmortyapi.spring.web.bind.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.github.jinahya.rickandmortyapi.persistence.Character_Type;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.net.URL;
 import java.time.LocalDate;
 
-@Setter(AccessLevel.PACKAGE)
-@Getter(AccessLevel.PACKAGE)
+@Relation(itemRelation = EpisodeType.RELATION_ITEM, collectionRelation = EpisodeType.RELATION_COLLECTION)
+@Setter
+@Getter
 @NoArgsConstructor
 @SuppressWarnings({
         "java:S116" // Field names should comply with a naming convention
@@ -23,6 +22,11 @@ import java.time.LocalDate;
 public class EpisodeType
         extends _BaseType {
 
+    static final String RELATION_ITEM = "episode";
+
+    static final String RELATION_COLLECTION = "episodes";
+
+    // -----------------------------------------------------------------------------------------------------------------
     @Positive
     @NotNull
     private Integer id;
@@ -30,9 +34,6 @@ public class EpisodeType
     // -----------------------------------------------------------------------------------------------------------------
     @NotNull
     private String name;
-
-    @NotNull
-    private LocalDate airDate;
 
     @NotBlank
     private String episode;
@@ -43,8 +44,5 @@ public class EpisodeType
     private URL url;
 
     // -----------------------------------------------------------------------------------------------------------------
-    @JsonIgnore
-    @Valid
-    @NotNull
-    private Character_Type characters_;
+    private LocalDate airDateIso_;
 }
