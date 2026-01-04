@@ -19,17 +19,27 @@ abstract class _BaseControllerTest {
 
     WebTestClient webTestClient() {
         if (webTestClient == null) {
-            final var baseUrl = "http://localhost:" + port;
+            baseUrl = "http://localhost:" + port;
             final var client = WebTestClient.bindToServer().baseUrl(baseUrl).build();
             webTestClient = client.mutateWith(clientConfigurer);
         }
         return webTestClient;
     }
 
+    // ------------------------------------------------------------------------------------------------------------ port
+
+    // --------------------------------------------------------------------------------------------------------- baseUrl
+    String getBaseUrl() {
+        return baseUrl;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     @LocalServerPort
     private int port;
 
+    private String baseUrl;
+
+    // -----------------------------------------------------------------------------------------------------------------
     @Autowired
     private HypermediaWebTestClientConfigurer clientConfigurer;
 

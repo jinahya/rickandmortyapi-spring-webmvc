@@ -5,11 +5,9 @@ import io.github.jinahya.rickandmortyapi.persistence.Character_Gender;
 import io.github.jinahya.rickandmortyapi.persistence.Character_Species;
 import io.github.jinahya.rickandmortyapi.persistence.Character_Status;
 import io.github.jinahya.rickandmortyapi.persistence.Character_Type;
-import io.github.jinahya.rickandmortyapi.persistence.Location_Type;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,20 +15,27 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.hateoas.server.core.Relation;
 
 import java.net.URL;
-import java.util.List;
 
-//@Setter(AccessLevel.PACKAGE)
+@Relation(itemRelation = CharacterType.RELATION_ITEM, collectionRelation = CharacterType.RELATION_COLLECTION)
 @Setter
 @Getter
-//@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-@Relation(collectionRelation = "characterTypeList")
 @SuppressWarnings({
-        "java:S116" // Field names should comply with a naming convention
+        "java:S115", // Constant names should comply with a naming convention
+        "java:S116"  // Field names should comply with a naming convention
 })
 public class CharacterType
         extends _BaseType {
 
+    static final String RELATION_ITEM = "character";
+
+    static final String RELATION_COLLECTION = "characters";
+
+    public static final String RELATION_ORIGIN_ = "origin_";
+
+    public static final String RELATION_LOCATION_ = "location_";
+
+    // -----------------------------------------------------------------------------------------------------------------
     @Positive
     @NotNull
     private Integer id;
@@ -61,15 +66,15 @@ public class CharacterType
     private URL url;
 
     // -----------------------------------------------------------------------------------------------------------------
-//    @JsonIgnore
-//    @Valid
-//    @NotNull
-//    private Location_Type origin_;
-//
-//    @JsonIgnore
-//    @Valid
-//    @NotNull
-//    private Location_Type location_;
+    @JsonIgnore
+    @Valid
+    @NotNull
+    private LocationType origin_;
+
+    @JsonIgnore
+    @Valid
+    @NotNull
+    private LocationType location_;
 //
 //    @JsonIgnore
 //    private List<@Valid @NotNull EpisodeType> episodes_;

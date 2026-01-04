@@ -1,25 +1,24 @@
 package io.github.jinahya.rickandmortyapi.spring.web.bind.type;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.jinahya.rickandmortyapi.persistence.Location_Dimension;
 import io.github.jinahya.rickandmortyapi.persistence.Location_Type;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jspecify.annotations.Nullable;
 
 import java.net.URL;
-import java.util.List;
 
 //@Setter(AccessLevel.PACKAGE)
 @Setter
-@Getter(AccessLevel.PACKAGE)
+@Getter
 @NoArgsConstructor//(access = AccessLevel.PACKAGE)
 public class LocationType
         extends _BaseType {
+
+    public static final String RELATION_RESIDENTS_ = "residents_";
 
     @Positive
     @NotNull
@@ -40,6 +39,6 @@ public class LocationType
     private URL url;
 
     // -----------------------------------------------------------------------------------------------------------------
-    @JsonIgnore
-    private List<CharacterType> residents_;
+//    @JsonIgnore
+//    private List<CharacterType> residents_;
 }

@@ -1,0 +1,8 @@
+### Reads /locationResident
+GET http://localhost:8080/locationResidents
+
+### Reads /locationResidents;idLocationId=1
+GET http://localhost:8080/locationResidents;id.locationId=1?size=100
+
+### Reads /characters/1
+GET http://localhost:8080/characters/1

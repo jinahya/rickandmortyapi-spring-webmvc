@@ -20,13 +20,12 @@
 <configuration>
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
-  <root level="debug">
+  <root level="info">
     <appender-ref ref="CONSOLE"/>
   </root>
   <logger name="io.github.jinahya" level="debug"/>
   <logger name="org.hibernate.orm.jdbc.bind" level="trace"/>
-  <logger name="org.spring" level="debug"/>
 </configuration>
