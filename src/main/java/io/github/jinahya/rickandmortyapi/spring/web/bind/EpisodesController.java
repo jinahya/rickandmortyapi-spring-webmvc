@@ -35,6 +35,10 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping(path = EpisodesController.REQUEST_MAPPING_PATH)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@SuppressWarnings({
+        "java:S100", // Method names should comply with a naming convention
+        "java:S115"  // Constant names should comply with a naming convention
+})
 class EpisodesController {
 
     static final String REQUEST_MAPPING_PATH = "episodes";
@@ -133,9 +137,10 @@ class EpisodesController {
                     MediaTypes.HAL_JSON_VALUE
             }
     )
-    PagedModel<EntityModel<CharacterType>> readCharacters(@Positive @PathVariable(PATH_NAME_ID) final int id,
-                                                          @PathVariable(PATH_NAME_CHARACTERS_) final String characters_,
-                                                          final Pageable pageable) {
+    PagedModel<EntityModel<CharacterType>> readCharacters_(
+            @Positive @PathVariable(PATH_NAME_ID) final int id,
+            @PathVariable(PATH_NAME_CHARACTERS_) final String characters_,
+            final Pageable pageable) {
         final var selected = characterEpisodeService
                 .applyRepository(repo -> repo.findAll(
                         (r, q, b) -> {

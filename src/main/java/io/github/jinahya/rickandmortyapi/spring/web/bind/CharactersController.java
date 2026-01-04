@@ -39,6 +39,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping(path = CharactersController.REQUEST_MAPPING_PATH)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@SuppressWarnings({
+        "java:S100", // Method names should comply with a naming convention
+        "java:S115"  // Constant names should comply with a naming convention
+})
 class CharactersController {
 
     static final String REQUEST_MAPPING_PATH = "characters";
@@ -158,9 +162,9 @@ class CharactersController {
                     MediaTypes.HAL_JSON_VALUE
             }
     )
-    PagedModel<EntityModel<EpisodeType>> readEpisodes(@Positive @PathVariable(PATH_NAME_ID) final int id,
-                                                      @PathVariable(PATH_NAME_EPISODES_) final String episodes,
-                                                      final Pageable pageable) {
+    PagedModel<EntityModel<EpisodeType>> readEpisodes_(@Positive @PathVariable(PATH_NAME_ID) final int id,
+                                                       @PathVariable(PATH_NAME_EPISODES_) final String episodes,
+                                                       final Pageable pageable) {
         final var selected = characterEpisodeService
                 .applyRepository(repo -> repo.findAll(
                         (r, q, b) -> {

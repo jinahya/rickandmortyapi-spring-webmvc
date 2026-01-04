@@ -1,13 +1,22 @@
 package io.github.jinahya.rickandmortyapi.spring.web.bind;
 
+import io.github.jinahya.rickandmortyapi.persistence.LocationResident;
+import io.github.jinahya.rickandmortyapi.persistence.LocationResidentId_;
+import io.github.jinahya.rickandmortyapi.persistence.LocationResident_;
+import io.github.jinahya.rickandmortyapi.spring.stereotype.LocationResidentService;
 import io.github.jinahya.rickandmortyapi.spring.stereotype.LocationService;
+import io.github.jinahya.rickandmortyapi.spring.web.bind.type.CharacterType;
 import io.github.jinahya.rickandmortyapi.spring.web.bind.type.LocationType;
 import io.github.jinahya.rickandmortyapi.spring.web.bind.type.mapper.LocationTypeMapper;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -26,6 +35,10 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping(path = LocationsController.REQUEST_MAPPING_PATH)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@SuppressWarnings({
+        "java:S100", // Method names should comply with a naming convention
+        "java:S115"  // Constant names should comply with a naming convention
+})
 class LocationsController {
 
     static final String REQUEST_MAPPING_PATH = "locations";
@@ -36,6 +49,16 @@ class LocationsController {
     private static final String PATH_VALUE_ID = "\\d+";
 
     static final String PATH_TEMPLATE_ID = '{' + PATH_NAME_ID + ':' + PATH_VALUE_ID + '}';
+
+    // -----------------------------------------------------------------------------------------------------------------
+    private static final String PATH_NAME_RESIDENTS_ = "residents_";
+
+    private static final String PATH_VALUE_RESIDENTS_ = "residents_";
+
+    static final String PATH_TEMPLATE_RESIDENTS_ = '{' + PATH_NAME_RESIDENTS_ + ':' + PATH_VALUE_RESIDENTS_ + '}';
+
+    @Autowired
+    private ConnectionDetails connectionDetails;
 
     // -----------------------------------------------------------------------------------------------------------------
     static EntityModel<LocationType> decorate(final EntityModel<LocationType> entityModel) {
@@ -106,10 +129,45 @@ class LocationsController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @Valid
+    @NotNull
+    @GetMapping(
+            path = {
+                    '/' + PATH_TEMPLATE_ID + '/' + PATH_TEMPLATE_RESIDENTS_
+            },
+            produces = {
+                    MediaTypes.HAL_JSON_VALUE
+            }
+    )
+    PagedModel<EntityModel<CharacterType>> readResidents_(@Positive @PathVariable(PATH_NAME_ID) final int id,
+                                                          @PathVariable(PATH_NAME_RESIDENTS_) final String residents_,
+                                                          final Pageable pageable) {
+        final var selected = locationResidentService.applyRepository(repo -> {
+                    return repo.findAll(
+                            (r, q, b) -> {
+                                if (q.getResultType() != Long.class) {
+                                    r.fetch(LocationResident_.RESIDENT, JoinType.LEFT);
+                                }
+                                return b.equal(r.get(LocationResident_.ID).get(LocationResidentId_.LOCATION_ID), id);
+                            },
+                            pageable
+                    );
+                })
+                .map(LocationResident::getResident);
+        return charactersController.toPagedModel(selected);
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     private final LocationService locationService;
 
     private final LocationTypeMapper locationTypeMapper;
 
     private final PagedResourcesAssembler<LocationType> pagedResourcesAssembler;
+
+    // -----------------------------------------------------------------------------------------------------------------
+    private final LocationResidentService locationResidentService;
+
+    @Lazy
+    @Autowired
+    private CharactersController charactersController;
 }
